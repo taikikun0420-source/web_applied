@@ -6,10 +6,14 @@ let x = 100;
 let y = 80;
 let vx = 180;
 let vy = 140;
-const r = 14;
+let r = 14;
 let last = performance.now();
+let gravity = 500;
 
 function update(dt) {
+
+  vy = vy + gravity * dt;
+  
   x = x + vx * dt;
   y = y + vy * dt;
 
@@ -42,10 +46,28 @@ function draw() {
 function loop(now) {
   const dt = (now - last) / 1000;
   last = now;
-  info.textContent = "dt：" + dt.toFixed(4) + " 秒　／　1秒に約 " + (1 / dt).toFixed(0) + " 回";
+  info.textContent = "dt：" + dt.toFixed(4) + " 秒/1秒に約 " + (1 / dt).toFixed(0) + " 回";
   update(dt);
   draw();
   requestAnimationFrame(loop);
 }
 
 requestAnimationFrame(loop);
+
+document.addEventListener("keydown", (e) => {
+  if (e.code === "ArrowUp") {
+    vx = vx * 1.2;   // 速さを1.2倍（向きはそのまま）
+    vy = vy * 1.2;
+  }
+  if(e.code === "ArrowDown"){
+    vx = vx * 0.8;   
+    vy = vy * 0.8;
+  }
+  if (e.code === "ArrowRight"){
+    r++;
+  }
+  if (e.code === "ArrowLeft"){
+    r--;
+  }
+
+});
